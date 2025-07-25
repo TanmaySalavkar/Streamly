@@ -1,1 +1,1 @@
-#Streamly - A Backend Project
+Streamly - A Backend Project
