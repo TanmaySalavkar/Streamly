@@ -49,17 +49,17 @@ const userSchema = new Schema({
     timestamps:true
 }
 )
-
+// Middleware to hash password before saving the user
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next();
     this.password = bcrypt.hash(this.password, 10)
     next()
 })
-
+// Instance method to compare entered password with hashed password in DB
 userSchema.methods.isPasswordCorrect = async function (password) {
     return await bcrypt.compare(password, this.password)
 }
-
+// Instance method to generate access token (Short life)
 userSchema.methods.generateAccessToken = function(){
     return jwt.sign(
         {
@@ -74,6 +74,7 @@ userSchema.methods.generateAccessToken = function(){
         }
     )
 }
+// Instance method to generate refresh token (Long life)
 userSchema.methods.generateRefreshToken = function(){
         return jwt.sign(
         {
